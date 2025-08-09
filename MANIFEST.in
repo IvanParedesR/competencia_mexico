@@ -1,0 +1,10 @@
+# Documentación y licencia
+include README.md
+include LICENSE
+
+# Archivos de datos (CSV y FAISS)
+include competencia_tools/data/*.csv
+include competencia_tools/data/faiss_index/*
+
+# Archivos de pruebas
+recursive-include tests *.py
