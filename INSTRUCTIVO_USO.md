@@ -1,5 +1,5 @@
 
-# 📘 Instructivo de uso — Paquete de Python (competencia_tools / competencia-mexico)
+# 📘 Instructivo de uso — Paquete de Python *competencia-mexico)
 
 Guía rápida y clara para instalar, importar y utilizar las funciones del paquete que incluye:
 - **Índices de competencia** (IHH, dominancia y variaciones por fusión)
@@ -8,23 +8,14 @@ Guía rápida y clara para instalar, importar y utilizar las funciones del paque
 - **Búsqueda de artículos** (con CSV empacado)
 - **RAG con DeepSeek** (índice FAISS empacado)
 
-> Nota: En TestPyPI tu proyecto puede llamarse `competencia-mexico`, mientras que el módulo se importa como `competencia_tools`. Si tu import es distinto (p. ej. `competencia_mexico`), ajusta los ejemplos.
-
 ---
 
 ## 1) Instalación
 
-### 1.1 Desde TestPyPI (recomendado para pruebas)
-```bash
-pip install -i https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple competencia-mexico
-```
-El `--extra-index-url` permite resolver dependencias desde PyPI cuando no estén en TestPyPI.
-
-### 1.2 Desde PyPI (cuando publiques estable)
+### 1.1 Desde PyPI
 ```bash
 pip install competencia-mexico
 ```
-o el nombre que elijas en PyPI.
 
 ### 1.3 Requisitos principales
 - Python ≥ 3.8
@@ -37,15 +28,12 @@ o el nombre que elijas en PyPI.
 
 ```python
 # Opción típica (módulo):
-import competencia_tools as ct
-
-# Si tu paquete se importa con otro nombre, por ejemplo:
-# import competencia_mexico as ct
+import competencia_mexico as cm
 ```
 
 Comprueba la versión:
 ```python
-print(ct.__version__)
+print(cm.__version__)
 ```
 
 ---
@@ -57,16 +45,16 @@ Funciones: `calcular_ihh_interactivo`, `calcular_id_interactivo`, `variacion_ihh
 
 ```python
 # IHH (sigue los prompts en consola / notebook):
-ct.calcular_ihh_interactivo()
+cm.calcular_ihh_interactivo()
 
 # Índice de dominancia:
-ct.calcular_id_interactivo()
+cm.calcular_id_interactivo()
 
 # Variación de IHH por fusión:
-ct.variacion_ihh_interactiva()
+cm.variacion_ihh_interactiva()
 
 # Variación del índice de dominancia por fusión:
-ct.variacion_dominancia_interactiva()
+cm.variacion_dominancia_interactiva()
 ```
 
 **Sugerencias**  
@@ -90,13 +78,13 @@ df = pd.DataFrame({
 }).set_index("Producto")
 
 # Aumentar precios 10% (sin gráficos)
-df_aum = ct.aumentar_precios(df, ["Precio2024", "Precio2025"], 0.10, graficar=False)
+df_aum = cm.aumentar_precios(df, ["Precio2024", "Precio2025"], 0.10, graficar=False)
 
 # Calcular sobreprecio entre dos columnas
-df_sp = ct.calcular_sobreprecio(df, "Precio2024", "Precio2025")
+df_sp = cm.calcular_sobreprecio(df, "Precio2024", "Precio2025")
 
 # Pérdida por colusión (genera gráfico)
-area_A, area_B = ct.perdida_colusion(
+area_A, area_B = cm.perdida_colusion(
     precio_competencia=100,
     precio_colusion=120,
     cantidad_competencia=1000,
@@ -112,7 +100,7 @@ Función: `graficar_y_resumir_asuntos_interactiva`
 - Requiere columnas: `FechaResolucion`, `Rubro`, `Decision`.
 
 ```python
-ct.graficar_y_resumir_asuntos_interactiva()
+cm.graficar_y_resumir_asuntos_interactiva()
 # El flujo te pedirá:
 # - Rubro (p. ej. DE, IO, OPN)
 # - Desagregación (mes/año)
@@ -124,12 +112,12 @@ ct.graficar_y_resumir_asuntos_interactiva()
 
 ### 3.4 Búsqueda de artículos (CSV empacado)
 Función: `buscar_articulos_csv`  
-- Lee **`articulos_final.csv`** empacado en `competencia_tools/data`.  
+- Lee **`articulos_final.csv`** empacado en `competencia_mexico/data`.  
 - Busca una palabra clave en la columna `texto` y muestra títulos; opcionalmente imprime el texto con resaltado (ANSI).
 
 ```python
 # Busca la palabra "competencia"
-df_hits = ct.buscar_articulos_csv("competencia")
+df_hits = cm.buscar_articulos_csv("competencia")
 ```
 
 ---
@@ -140,7 +128,7 @@ Función: `consultar_con_rag_deepseek`
 - Requiere **API Key** de DeepSeek y conexión a internet.
 
 ```python
-ct.consultar_con_rag_deepseek()
+cm.consultar_con_rag_deepseek()
 # Prompts:
 # - API Key de DeepSeek
 # - Pregunta
@@ -157,13 +145,13 @@ ct.consultar_con_rag_deepseek()
 
 ### 4.1 Instalar desde TestPyPI
 ```python
-!pip install -i https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple competencia-mexico
+!pip install competencia_mexico
 ```
 
 ### 4.2 Importar y probar
 ```python
 import competencia_tools as ct
-print(ct.__version__)
+print(cm.__version__)
 ```
 
 > Si no puedes importar, revisa el nombre exacto del módulo (puede variar según cómo lo hayas publicado).
@@ -195,16 +183,12 @@ print(ct.__version__)
 
 ## 6) Versionado y publicación
 
-- Para publicar en **TestPyPI** con GitHub Actions, crea un tag tipo `test-v0.1.0` y empuja el tag.  
-- Para **PyPI**, usa tags tipo `v0.1.0`.  
-- Revisa la pestaña **Actions** del repo para ver el estado del pipeline.
+Version 0.1.1
 
 ---
 
 ## 7) Contacto
 Autor: **Iván Paredes Reséndiz**  
-Soporte / dudas: abre un *issue* en tu repositorio o agrega tu correo aquí.
+Soporte / dudas: ivanresendiz25@gmail.com
 
 ---
-
-¡Listo! Con esto deberías poder instalar, importar y usar el paquete en local, Colab o servidores.
