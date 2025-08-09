@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "competencia_mexico"
-version = "0.1.0"
+version = "0.1.1"
 description = "Herramientas para análisis de competencia económica, precios, visualización y RAG (FAISS + DeepSeek)"
 readme = "README.md"
 license = { file = "LICENSE" }
@@ -35,5 +35,6 @@ competencia_mexico = [
     "data/*.csv",
     "data/faiss_index/*"
 ]
+
 
 
