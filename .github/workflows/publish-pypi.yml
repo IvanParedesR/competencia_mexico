@@ -3,7 +3,7 @@ name: Publish to PyPI
 on:
   push:
     tags:
-      - "v*"   # ejemplo: v0.1.1
+      - "v0.1.1" 
 
 jobs:
   build-and-publish:
@@ -36,4 +36,5 @@ jobs:
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           password: ${{ secrets.PYPI_API_TOKEN }}
+
 
