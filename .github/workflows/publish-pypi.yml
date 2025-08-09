@@ -29,8 +29,7 @@ jobs:
         run: twine check dist/*
 
       # 1) TOKEN PyPI: crea el secreto PYPI_API_TOKEN en GitHub (Settings > Secrets > Actions)
-      - name: Publish to PyPI (token)
-        if: ${{ secrets.PYPI_API_TOKEN != '' }}
+      - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           password: ${{ secrets.PYPI_API_TOKEN }}
