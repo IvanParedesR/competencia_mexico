@@ -6,6 +6,8 @@ Este paquete contiene funciones interactivas y automatizadas para facilitar el a
 
 También incorpora funcionalidades para recuperación aumentada de información (RAG) utilizando `FAISS` y el modelo `DeepSeek`, lo que permite responder preguntas basadas en documentos previamente indexados.
 
+Se anexa un instructivo para facilitar su uso. 
+
 ---
 
 ## 🚀 Instalación
@@ -22,3 +24,4 @@ También incorpora funcionalidades para recuperación aumentada de información 
 
 ```bash
 pip install -e .
+
