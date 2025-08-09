@@ -23,5 +23,6 @@ Se anexa un instructivo para facilitar su uso.
 2. Desde el directorio raíz, ejecuta:
 
 ```bash
-pip install -e .
+pip install competencia-mexico .
+
 
