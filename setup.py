@@ -6,7 +6,7 @@ README = (Path(__file__).parent / "README.md").read_text(encoding="utf-8")
 
 setup(
     name="competencia_tools",
-    version="0.1.0",
+    version="0.1.1",
     author="Iván Paredes Reséndiz",
     author_email="",
     description="Herramientas para análisis de competencia, precios, visualización y RAG (FAISS + DeepSeek).",
@@ -58,4 +58,5 @@ setup(
     },
     zip_safe=False,  # más seguro si lees data con métodos tradicionales; con importlib.resources no es obligatorio
 )
+
 
