@@ -91,20 +91,21 @@ def graficar_y_resumir_asuntos_interactiva():
 
 def _cargar_csv_empaquetado(nombre_archivo):
     """
-    Carga un CSV ubicado en competencia_tools/data/<nombre_archivo>
+    Carga un CSV ubicado en competencia_mexico/data/<nombre_archivo>
     usando importlib.resources. Devuelve un DataFrame.
     """
     # Python 3.9+: importlib.resources.files
     try:
         from importlib.resources import files
-        data_path = files('competencia_tools.data').joinpath(nombre_archivo)
+        data_path = files('competencia_mexico.data').joinpath(nombre_archivo)
         return pd.read_csv(data_path)
     except Exception:
         # Fallback para entornos más viejos
         import pkgutil, io
-        raw = pkgutil.get_data('competencia_tools.data', nombre_archivo)
+        raw = pkgutil.get_data('competencia_mexico.data', nombre_archivo)
         if raw is None:
             raise FileNotFoundError(
-                f"No se encontró '{nombre_archivo}' dentro de competencia_tools/data."
+                f"No se encontró '{nombre_archivo}' dentro de competencia_mexico/data."
             )
         return pd.read_csv(io.BytesIO(raw))
+
