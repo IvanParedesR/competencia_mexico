@@ -12,10 +12,10 @@ setup(
     description="Herramientas para análisis de competencia, precios, visualización y RAG (FAISS + DeepSeek).",
     long_description=README,
     long_description_content_type="text/markdown",
-    url="https://github.com/tu-usuario/competencia_tools",
+    url="https://github.com/IvanParedesR/competencia_mexico",
     project_urls={
-        "Bug Tracker": "https://github.com/tu-usuario/competencia_tools/issues",
-        "Documentation": "https://github.com/tu-usuario/competencia_tools",
+        "Bug Tracker": "https://github.com/IvanParedesR/competencia_mexico/issues",
+        "Documentation": "https://github.com/IvanParedesR/competencia_mexico",
     },
     license="MIT",
     packages=find_packages(exclude=("tests", "tests.*")),
@@ -23,7 +23,7 @@ setup(
     package_data={
         "competencia_tools": [
             "data/*.csv",              # p.ej. articulos_final.csv, estadisticas_final.csv
-            # "faiss_index/*",         # si algún día incluyes un índice FAISS dentro del paquete (no es lo ideal)
+            "faiss_index/*",         # si algún día incluyes un índice FAISS dentro del paquete (no es lo ideal)
         ]
     },
     install_requires=[
@@ -33,7 +33,7 @@ setup(
         "requests>=2.28",
         "langchain-community>=0.2.0",
         "sentence-transformers>=2.5.0",
-        # "faiss-cpu>=1.7.4",        # si vas a construir/cargar índices FAISS en el runtime
+        "faiss-cpu>=1.7.4",        # si vas a construir/cargar índices FAISS en el runtime
     ],
     extras_require={
         "dev": ["pytest", "ruff", "black", "twine", "build"],
@@ -58,3 +58,4 @@ setup(
     },
     zip_safe=False,  # más seguro si lees data con métodos tradicionales; con importlib.resources no es obligatorio
 )
+
