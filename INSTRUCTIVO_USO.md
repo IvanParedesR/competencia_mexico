@@ -1,5 +1,5 @@
 
-# 📘 Instructivo de uso — Paquete de Python competencia-mexico
+# Instructivo de uso — Paquete de Python competencia-mexico
 
 Guía rápida y clara para instalar, importar y utilizar las funciones del paquete que incluye:
 - **Índices de competencia** (IHH, dominancia y variaciones por fusión)
