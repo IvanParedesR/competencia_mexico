@@ -21,7 +21,7 @@ setup(
     packages=find_packages(exclude=("tests", "tests.*")),
     include_package_data=True,  # <-- importante para empaquetar data
     package_data={
-        "competencia_tools": [
+        "competencia_mexico": [
             "data/*.csv",              # p.ej. articulos_final.csv, estadisticas_final.csv
             "faiss_index/*",         # si algún día incluyes un índice FAISS dentro del paquete (no es lo ideal)
         ]
@@ -58,6 +58,7 @@ setup(
     },
     zip_safe=False,  # más seguro si lees data con métodos tradicionales; con importlib.resources no es obligatorio
 )
+
 
 
 
