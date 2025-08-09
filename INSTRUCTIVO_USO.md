@@ -150,7 +150,7 @@ cm.consultar_con_rag_deepseek()
 
 ### 4.2 Importar y probar
 ```python
-import competencia_tools as ct
+import competencia_mexico as cm
 print(cm.__version__)
 ```
 ---
