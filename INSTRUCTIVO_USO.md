@@ -153,9 +153,6 @@ cm.consultar_con_rag_deepseek()
 import competencia_tools as ct
 print(cm.__version__)
 ```
-
-> Si no puedes importar, revisa el nombre exacto del módulo (puede variar según cómo lo hayas publicado).
-
 ---
 
 ## 5) Problemas comunes (FAQ)
