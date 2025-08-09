@@ -5,7 +5,7 @@ from pathlib import Path
 README = (Path(__file__).parent / "README.md").read_text(encoding="utf-8")
 
 setup(
-    name="competencia_tools",
+    name="competencia_mexico",
     version="0.1.1",
     author="Iván Paredes Reséndiz",
     author_email="",
@@ -58,5 +58,6 @@ setup(
     },
     zip_safe=False,  # más seguro si lees data con métodos tradicionales; con importlib.resources no es obligatorio
 )
+
 
 
