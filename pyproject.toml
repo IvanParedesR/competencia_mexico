@@ -9,7 +9,7 @@ description = "Herramientas para análisis de competencia económica, precios, v
 readme = "README.md"
 license = { file = "LICENSE" }
 authors = [
-    { name = "Iván Paredes Reséndiz" }
+    { name = "Iván Paredes Reséndiz", email="ivanresendiz25@gmail.com" }
 ]
 requires-python = ">=3.8"
 dependencies = [
@@ -35,4 +35,5 @@ competencia_mexico = [
     "data/*.csv",
     "data/faiss_index/*"
 ]
+
 
