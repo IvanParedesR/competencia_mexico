@@ -2,7 +2,7 @@
 def buscar_articulos_csv(palabra_clave):
     """
     Busca artículos que contengan la palabra clave en el CSV empaquetado
-    'articulos_final.csv' (incluido dentro de competencia_tools/data).
+    'articulos_final.csv' (incluido dentro de competencia_mexico/data).
 
     Retorna:
         pd.DataFrame con columnas ['articulo_titulo', 'texto'] filtradas.
@@ -13,13 +13,13 @@ def buscar_articulos_csv(palabra_clave):
     try:
         # Python 3.9+: acceso a recursos empacados
         from importlib.resources import files
-        data_path = files('competencia_tools.data').joinpath('articulos_final.csv')
+        data_path = files('competencia_mexico.data').joinpath('articulos_final.csv')
         df = pd.read_csv(data_path)
     except Exception as e:
         # Fallback para entornos viejos o si falla importlib.resources
         try:
             import pkgutil, io
-            raw = pkgutil.get_data('competencia_tools.data', 'articulos_final.csv')
+            raw = pkgutil.get_data('competencia_mexico.data', 'articulos_final.csv')
             if raw is None:
                 raise FileNotFoundError("No se encontró 'articulos_final.csv' en los recursos del paquete.")
             df = pd.read_csv(io.BytesIO(raw))
@@ -57,3 +57,4 @@ def buscar_articulos_csv(palabra_clave):
             print("-" * 60)
 
     return coincidencias[["articulo_titulo", "texto"]]
+
