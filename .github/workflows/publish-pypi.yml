@@ -1,15 +1,13 @@
-name: Publish to PyPI
+name: Publish to PyPI (tags)
 
 on:
   push:
     tags:
-      - "v0.1.1" 
+      - "v*.*.*"
 
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write  # requerido si usas Trusted Publishing (OIDC)
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -28,12 +26,8 @@ jobs:
       - name: Twine check
         run: twine check dist/*
 
-      # 1) TOKEN PyPI: crea el secreto PYPI_API_TOKEN en GitHub (Settings > Secrets > Actions)
-      - name: Publish to PyPI
+      - name: Publish to PyPI (API token)
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           password: ${{ secrets.PYPI_API_TOKEN }}
-
-
-
-
+          skip-existing: true
