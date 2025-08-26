@@ -26,20 +26,20 @@ def graficar_y_resumir_asuntos_interactiva():
     rubros_disponibles = (
         df["Rubro"].dropna().astype(str).str.upper().unique().tolist()
     )
-    print("\n📊 GRAFICADOR DE ASUNTOS")
+    print("\n Graficador de asuntos")
     print("-------------------------")
     print("Rubros disponibles:", ', '.join(sorted(rubros_disponibles)))
 
     # 5) Inputs
-    rubro = input("\n👉 ¿Qué rubro quieres graficar? (Ej. DE, IO, OPN): ").strip().upper()
+    rubro = input("\n ¿Qué rubro quieres graficar? (Ej. DE, IO, OPN): ").strip().upper()
     if rubro not in rubros_disponibles:
         raise ValueError(f"El rubro '{rubro}' no está en los datos.")
 
-    desagregacion = input("📆 ¿Quieres agrupar por mes o por año? [mes/año]: ").strip().lower()
+    desagregacion = input(" ¿Quieres agrupar por mes o por año? [mes/año]: ").strip().lower()
     if desagregacion not in ["mes", "año"]:
         raise ValueError("Debes escribir 'mes' o 'año'.")
 
-    por_decision = input("📌 ¿Quieres desglosar por tipo de decisión? [s/n]: ").strip().lower()
+    por_decision = input(" ¿Quieres desglosar por tipo de decisión? [s/n]: ").strip().lower()
     if por_decision not in ["s", "n"]:
         raise ValueError("Responde 's' para sí o 'n' para no.")
     por_decision = (por_decision == "s")
@@ -113,3 +113,4 @@ def _cargar_csv_empaquetado(nombre_archivo: str) -> pd.DataFrame:
                 f"No se encontró '{nombre_archivo}' dentro de competencia_mexico/data."
             )
         return pd.read_csv(io.BytesIO(raw))
+
