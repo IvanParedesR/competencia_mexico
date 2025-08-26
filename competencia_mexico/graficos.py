@@ -1,4 +1,6 @@
-# graficos.py (por ejemplo, dentro de tu paquete)
+# graficos.py
+import pandas as pd
+import matplotlib.pyplot as plt
 
 def graficar_y_resumir_asuntos_interactiva():
     """
@@ -6,12 +8,9 @@ def graficar_y_resumir_asuntos_interactiva():
     un flujo interactivo para graficar y resumir asuntos por mes/año,
     filtrando por Rubro y, opcionalmente, por tipo de Decisión.
 
-    Requiere que el CSV tenga las columnas:
-    ['FechaResolucion', 'Rubro', 'Decision'].
+    Requiere columnas: ['FechaResolucion', 'Rubro', 'Decision'].
     """
-    # 1) Cargar el CSV empacado
-    import pandas as pd
-    import matplotlib.pyplot as plt
+    # 1) Cargar el CSV empacado (zip-safe)
     df = _cargar_csv_empaquetado("estadisticas_final.csv")
 
     # 2) Validar columnas necesarias
@@ -24,7 +23,9 @@ def graficar_y_resumir_asuntos_interactiva():
     df["FechaResolucion"] = pd.to_datetime(df["FechaResolucion"], errors="coerce")
 
     # 4) Opciones de rubro
-    rubros_disponibles = df["Rubro"].dropna().astype(str).str.upper().unique().tolist()
+    rubros_disponibles = (
+        df["Rubro"].dropna().astype(str).str.upper().unique().tolist()
+    )
     print("\n📊 GRAFICADOR DE ASUNTOS")
     print("-------------------------")
     print("Rubros disponibles:", ', '.join(sorted(rubros_disponibles)))
@@ -59,7 +60,8 @@ def graficar_y_resumir_asuntos_interactiva():
         resumen.plot(kind="bar", stacked=True, figsize=(12, 6))
         plt.title(f"Asuntos por {desagregacion} (Rubro '{rubro}') desglosados por decisión")
     else:
-        resumen = df["Periodo"].value_counts().sort_index()
+        # usar groupby para mantener orden cronológico
+        resumen = df.groupby("Periodo").size()
         resumen.plot(kind="bar", figsize=(10, 5))
         plt.title(f"Asuntos por {desagregacion} (Rubro '{rubro}')")
 
@@ -68,7 +70,7 @@ def graficar_y_resumir_asuntos_interactiva():
     plt.ylabel("Número de asuntos")
     ax = plt.gca()
     xticklabels = ax.get_xticklabels()
-    N = 3  # Muestra 1 de cada N etiquetas para evitar saturación
+    N = 3
     for i, label in enumerate(xticklabels):
         label.set_visible(i % N == 0)
     plt.xticks(rotation=45)
@@ -80,32 +82,34 @@ def graficar_y_resumir_asuntos_interactiva():
     resumen_final = (resumen.reset_index().rename(columns={0: "Total"})
                      if not por_decision else resumen.reset_index())
 
-    # display() está disponible en notebooks; si no, imprime head
     try:
+        from IPython.display import display  # si estás en notebook
         display(resumen_final)
-    except NameError:
+    except Exception:
         print(resumen_final.head(20).to_string(index=False))
 
     return resumen_final
 
 
-def _cargar_csv_empaquetado(nombre_archivo):
+def _cargar_csv_empaquetado(nombre_archivo: str) -> pd.DataFrame:
     """
     Carga un CSV ubicado en competencia_mexico/data/<nombre_archivo>
-    usando importlib.resources. Devuelve un DataFrame.
+    usando importlib.resources (zip-safe). Devuelve un DataFrame.
     """
-    # Python 3.9+: importlib.resources.files
+    from importlib.resources import files, as_file
+
+    # Apunta al paquete raíz y concatena 'data'
+    data_ref = files('competencia_mexico') / 'data' / nombre_archivo
     try:
-        from importlib.resources import files
-        data_path = files('competencia_mexico.data').joinpath(nombre_archivo)
-        return pd.read_csv(data_path)
-    except Exception:
-        # Fallback para entornos más viejos
+        # as_file maneja recursos dentro de wheels/zip
+        with as_file(data_ref) as real_path:
+            return pd.read_csv(real_path)
+    except FileNotFoundError:
+        # Fallback para entornos más viejos o casos extremos
         import pkgutil, io
-        raw = pkgutil.get_data('competencia_mexico.data', nombre_archivo)
+        raw = pkgutil.get_data('competencia_mexico', f'data/{nombre_archivo}')
         if raw is None:
             raise FileNotFoundError(
                 f"No se encontró '{nombre_archivo}' dentro de competencia_mexico/data."
             )
         return pd.read_csv(io.BytesIO(raw))
-
