@@ -2,16 +2,17 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-def graficar_y_resumir_asuntos_interactiva():
-    """
-    Lee 'estadisticas_final.csv' incluido en el paquete y lanza
-    un flujo interactivo para graficar y resumir asuntos por mes/año,
-    filtrando por Rubro y, opcionalmente, por tipo de Decisión.
-
-    Requiere columnas: ['FechaResolucion', 'Rubro', 'Decision'].
-    """
-    # 1) Cargar el CSV empacado (zip-safe)
-    df = _cargar_csv_empaquetado("estadisticas_final.csv")
+def graficar_y_resumir_asuntos_interactiva(
+    ruta_csv: str | None = None,
+    df: pd.DataFrame | None = None,
+    nombre_empaquetado: str = "estadisticas_final.csv",
+):
+    if df is not None:
+        base = df.copy()
+    elif ruta_csv is not None:
+        base = pd.read_csv(ruta_csv)
+    else:
+        base = _cargar_csv_empaquetado(nombre_empaquetado)
 
     # 2) Validar columnas necesarias
     for col in ['FechaResolucion', 'Rubro', 'Decision']:
@@ -113,4 +114,5 @@ def _cargar_csv_empaquetado(nombre_archivo: str) -> pd.DataFrame:
                 f"No se encontró '{nombre_archivo}' dentro de competencia_mexico/data."
             )
         return pd.read_csv(io.BytesIO(raw))
+
 
