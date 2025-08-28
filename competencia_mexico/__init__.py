@@ -24,7 +24,7 @@ from .articulos import buscar_articulos_csv
 from .rag import consultar_con_rag_deepseek
 
 # Definir versión del paquete
-__version__ = "0.1.0"
+__version__ = "0.1.5"
 
 # Qué se exporta si el usuario hace `from competencia_mexico import *`
 __all__ = [
@@ -43,4 +43,7 @@ __all__ = [
     "buscar_articulos_csv",
     # rag
     "consultar_con_rag_deepseek",
+    # modelos
+    "analizar_mercado",
 ]
+
