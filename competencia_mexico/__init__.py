@@ -22,6 +22,8 @@ from .sobreprecios import (
 from .graficos import graficar_y_resumir_asuntos_interactiva
 from .articulos import buscar_articulos_csv
 from .rag import consultar_con_rag_deepseek
+from .modelos import analizar_mercado
+
 
 # Definir versión del paquete
 __version__ = "0.1.5"
@@ -46,4 +48,5 @@ __all__ = [
     # modelos
     "analizar_mercado",
 ]
+
 
