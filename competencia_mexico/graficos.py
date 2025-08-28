@@ -1,6 +1,22 @@
-# graficos.py
+import math
 import pandas as pd
 import matplotlib.pyplot as plt
+
+# (Opcional) helper si empaquetas el CSV dentro del paquete
+def _cargar_csv_empaquetado(nombre_empaquetado: str) -> pd.DataFrame:
+    """
+    Carga un CSV incluido en el paquete. Ajusta el paquete/ruta según tu estructura.
+    """
+    try:
+        from importlib.resources import files
+        # Cambia 'tu_paquete' por el nombre real del paquete donde va el CSV
+        path = files("tu_paquete").joinpath(nombre_empaquetado)
+        return pd.read_csv(path)
+    except Exception as e:
+        raise FileNotFoundError(
+            f"No pude cargar '{nombre_empaquetado}' desde el paquete. "
+            f"Asegúrate de declararlo en package_data / MANIFEST.in. Error: {e}"
+        )
 
 def graficar_y_resumir_asuntos_interactiva(
     ruta_csv: str | None = None,
@@ -48,47 +64,55 @@ def graficar_y_resumir_asuntos_interactiva(
         raise ValueError("Responde 's' para sí o 'n' para no.")
     por_decision = (por_decision == "s")
 
-    # 6) Filtrar por rubro y fechas válidas
-    base = base[base["Rubro"].astype(str).str.upper() == rubro]
-    base = base.dropna(subset=["FechaResolucion"])
+    # 6) Filtrar por rubro y fechas válidas (usa .copy() para evitar SettingWithCopy)
+    base = base[base["Rubro"].astype(str).str.upper() == rubro].dropna(subset=["FechaResolucion"]).copy()
 
-    # 7) Crear columna Periodo
+    # 7) Crear columna Periodo (como Period para ordenar bien)
     if desagregacion == "mes":
-        base["Periodo"] = base["FechaResolucion"].dt.to_period("M").astype(str)
+        base["Periodo"] = base["FechaResolucion"].dt.to_period("M")
     else:
-        base["Periodo"] = base["FechaResolucion"].dt.year.astype(str)
+        base["Periodo"] = base["FechaResolucion"].dt.to_period("Y")
 
     # 8) Agrupar y graficar
     if por_decision:
-        resumen = base.groupby(["Periodo", "Decision"]).size().unstack(fill_value=0)
-        resumen.plot(kind="bar", stacked=True, figsize=(12, 6))
+        resumen = base.groupby(["Periodo", "Decision"]).size().unstack(fill_value=0).sort_index()
+        ax = resumen.plot(kind="bar", stacked=True, figsize=(12, 6))
         plt.title(f"Asuntos por {'mes' if desagregacion=='mes' else 'año'} (Rubro '{rubro}') por decisión")
     else:
-        resumen = base.groupby("Periodo").size()
-        resumen.plot(kind="bar", figsize=(10, 5))
+        resumen = base.groupby("Periodo").size().sort_index()
+        ax = resumen.plot(kind="bar", figsize=(10, 5))
         plt.title(f"Asuntos por {'mes' if desagregacion=='mes' else 'año'} (Rubro '{rubro}')")
 
     # 9) Ajustes estéticos
     plt.xlabel("Periodo")
     plt.ylabel("Número de asuntos")
-    ax = plt.gca()
-    xticklabels = ax.get_xticklabels()
-    N = 3
-    for i, label in enumerate(xticklabels):
-        label.set_visible(i % N == 0)
-    plt.xticks(rotation=45)
+
+    # “Adelgazar” etiquetas de eje X de forma dinámica
+    xticks = ax.get_xticklabels()
+    if len(xticks) > 15:
+        step = math.ceil(len(xticks) / 15)
+        for i, lab in enumerate(xticks):
+            lab.set_visible(i % step == 0)
+
+    ax.set_xticklabels([str(x.get_text()) for x in xticks], rotation=45)
     plt.tight_layout()
     plt.show()
 
-    # 10) Tabla resumen
-    print("\n Tabla resumen:")
-    resumen_final = (resumen.reset_index().rename(columns={0: "Total"})
-                     if not por_decision else resumen.reset_index())
+    # 10) Tabla resumen robusta
+    if por_decision:
+        resumen_final = resumen.reset_index()
+    else:
+        # Series -> DataFrame con nombre predecible
+        resumen_final = resumen.to_frame("Total").reset_index()
+        # Si quieres el Periodo como string “YYYY-MM” / “YYYY”
+        resumen_final["Periodo"] = resumen_final["Periodo"].astype(str)
 
     try:
         from IPython.display import display
+        print("\n Tabla resumen:")
         display(resumen_final)
     except Exception:
+        print("\n Tabla resumen:")
         print(resumen_final.head(20).to_string(index=False))
 
     return resumen_final
